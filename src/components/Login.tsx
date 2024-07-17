@@ -2,14 +2,16 @@ import { login } from "../store/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 type Response = {
   username: string;
   password: string;
 };
+
 const LoginComponen = () => {
-  const [messageError, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const [messageError, setErrorMessage] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -19,7 +21,7 @@ const LoginComponen = () => {
     mutationFn: login,
     onSuccess: (data) => {
       console.log("Usuario autorizado", data);
-      navigate("/home");
+      navigate("/home")
     },
     onError: (error: Error) => {
       console.log("Error:", error.message);
