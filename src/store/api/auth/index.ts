@@ -1,24 +1,46 @@
-import axios from "axios";
-
-const Api = axios.create({
-  baseURL: " http://127.0.0.1:8000/api/",
-});
+import {conexion} from "../../../utils/conexion";
 type LoginResponse = {
-  message: string;
+  message: string
 };
+
 
 type LoginData = {
-  username: string;
+  numero_documento: Number;
   password: string;
 };
+type user = {
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  rol: string;
+  tipo_documento: string;
+  numero_documento: Number;
+}
 
 export const login = async (data: LoginData): Promise<LoginResponse> => {
   try {
-    const response = await Api.post("auth/login/", data);
+    const response = await conexion().post("auth/login/", data);
     return response.data;
   } catch (error: any) {
     if (error.response) {
       throw new Error(error.response.data.detail);
+    } else if (error.request) {
+      throw new Error("No se recibió respuesta del servidor");
+    } else {
+      throw new Error("Error al realizar la solicitud");
+    }
+  }
+};
+export const UserRegister = async (data: user): Promise<LoginResponse> => {
+  try {
+    const response = await conexion().post("auth/registrar/", data);
+
+    return response.data.message;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
     } else if (error.request) {
       throw new Error("No se recibió respuesta del servidor");
     } else {
